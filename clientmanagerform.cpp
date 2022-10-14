@@ -12,8 +12,8 @@ ClientManagerForm::ClientManagerForm(QWidget *parent) :
     ui->setupUi(this);
 
     QList<int> sizes;
-    sizes << 540 << 400;
-    //ui->splitter->setSizes(sizes);
+    sizes << 600 << 500;
+//    ui->splitter->setSizes(sizes);
 
     QAction* removeAction = new QAction(tr("&Remove"));
     connect(removeAction, SIGNAL(triggered()), SLOT(removeItem()));
@@ -36,7 +36,7 @@ ClientManagerForm::ClientManagerForm(QWidget *parent) :
         QList<QString> row = line.split(", ");
         if(row.size()) {
             int id = row[0].toInt();
-            ClientItem* c = new ClientItem(id, row[1], row[2], row[3]);
+            ClientItem* c = new ClientItem(id, row[1], row[2], row[3], row[4], row[5], row[6], row[7]);
             ui->treeWidget->addTopLevelItem(c);
             clientList.insert(id, c);
         }
@@ -55,20 +55,25 @@ ClientManagerForm::~ClientManagerForm()
     QTextStream out(&file);
     for (const auto& v : clientList) {
         ClientItem* c = v;
-        out << c->id() << ", " << c->getName() << ", ";
+        out << c->Cid() << ", " << c->getName() << ", ";
         out << c->getPhoneNumber() << ", ";
-        out << c->getAddress() << "\n";
+        out << c->getEmail() << ", ";
+        out << c->getAddress() << ", ";
+        out << c->getFavorite() << ", ";
+        out << c->getAge() << ", ";
+        out << c->getGender() << "\n";
+
     }
     file.close( );
 }
 
-int ClientManagerForm::makeId( )
+int ClientManagerForm::makeCid( )
 {
     if(clientList.size( ) == 0) {
         return 100;
     } else {
-        auto id = clientList.lastKey();
-        return ++id;
+        auto Cid = clientList.lastKey();
+        return ++Cid;
     }
 }
 
@@ -101,11 +106,15 @@ void ClientManagerForm::on_searchPushButton_clicked()
 
         foreach(auto i, items) {
             ClientItem* c = static_cast<ClientItem*>(i);
-            int id = c->id();
+            int id = c->Cid();
             QString name = c->getName();
             QString number = c->getPhoneNumber();
+            QString email = c->getEmail();
             QString address = c->getAddress();
-            ClientItem* item = new ClientItem(id, name, number, address);
+            QString favorite = c->getFavorite();
+            QString age = c->getAge();
+            QString gender = c->getGender();
+            ClientItem* item = new ClientItem(id, name, number, email, address, favorite, age, gender);
             ui->searchTreeWidget->addTopLevelItem(item);
         }
     }
@@ -117,27 +126,39 @@ void ClientManagerForm::on_modifyPushButton_clicked()
     if(item != nullptr) {
         int key = item->text(0).toInt();
         ClientItem* c = clientList[key];
-        QString name, number, address;
+        QString name, number,  email, address, favorite, age, gender;
         name = ui->nameLineEdit->text();
         number = ui->phoneNumberLineEdit->text();
+        email = ui->emaillineEdit->text();
         address = ui->addressLineEdit->text();
+        favorite = ui->addressLineEdit->text();
+        age = ui->AgeSpinBox->text();
+        gender = ui->MaleButton->text();
         c->setName(name);
         c->setPhoneNumber(number);
+        c->setEmail(email);
         c->setAddress(address);
+        c->setFavorite(favorite);
+        c->setAge(age);
+        c->setGender(gender);
         clientList[key] = c;
     }
 }
 
 void ClientManagerForm::on_addPushButton_clicked()
 {
-    QString name, number, address;
-    int id = makeId( );
+    QString name, number, email, address, favorite, age, gender;
+    int Cid = makeCid( );
     name = ui->nameLineEdit->text();
     number = ui->phoneNumberLineEdit->text();
+    email = ui->emaillineEdit->text();
     address = ui->addressLineEdit->text();
+    favorite = ui->addressLineEdit->text();
+    age = ui->AgeSpinBox->text();
+    gender = ui->MaleButton->text();
     if(name.length()) {
-        ClientItem* c = new ClientItem(id, name, number, address);
-        clientList.insert(id, c);
+        ClientItem* c = new ClientItem(Cid, name, number, email, address, favorite, age, gender);
+        clientList.insert(Cid, c);
         ui->treeWidget->addTopLevelItem(c);
     }
 }
@@ -150,4 +171,5 @@ void ClientManagerForm::on_treeWidget_itemClicked(QTreeWidgetItem *item, int col
     ui->phoneNumberLineEdit->setText(item->text(2));
     ui->addressLineEdit->setText(item->text(3));
 }
+
 

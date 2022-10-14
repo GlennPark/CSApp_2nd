@@ -2,7 +2,7 @@
 #define PRODUCTMANAGERFORM_H
 
 #include <QWidget>
-
+#include "productitem.h"
 namespace Ui {
 class ProductManagerForm;
 }
@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::ProductManagerForm *ui;
+    QMap<int, ProductItem*> productList;
 };
 
 #endif // PRODUCTMANAGERFORM_H

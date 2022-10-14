@@ -2,12 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <clientmanagerform.h>
+#include <productmanagerform.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class ClientManagerForm;
 
 class MainWindow : public QMainWindow
 {
@@ -19,9 +20,11 @@ public:
 
 private slots:
     void on_actionClient_triggered();
+    void on_actionProduct_triggered();
 
 private:
     Ui::MainWindow *ui;
     ClientManagerForm *clientForm;
+    ProductManagerForm *productForm;
 };
 #endif // MAINWINDOW_H

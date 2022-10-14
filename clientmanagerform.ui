@@ -6,242 +6,267 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>706</width>
-    <height>469</height>
+    <width>792</width>
+    <height>377</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Client Info</string>
+  <property name="font">
+   <font>
+    <kerning>true</kerning>
+   </font>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_4">
-   <item>
-    <widget class="QToolBox" name="toolBox_2">
-     <property name="maximumSize">
-      <size>
-       <width>200</width>
-       <height>500</height>
-      </size>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="inputPage_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>200</width>
-        <height>433</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>&amp;Input</string>
-      </attribute>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>191</width>
-         <height>341</height>
-        </rect>
-       </property>
-       <layout class="QFormLayout" name="clientFormLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="idLabel">
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Client Enroll</string>
+  </property>
+  <widget class="QToolBox" name="toolBox">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>20</y>
+     <width>300</width>
+     <height>360</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>360</height>
+    </size>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="inputPage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-128</y>
+      <width>285</width>
+      <height>420</height>
+     </rect>
+    </property>
+    <attribute name="label">
+     <string>&amp;Input</string>
+    </attribute>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QFormLayout" name="clientFormLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="idLabel">
+         <property name="text">
+          <string>I&amp;D</string>
+         </property>
+         <property name="buddy">
+          <cstring>idLineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="idLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="nameLabel">
+         <property name="text">
+          <string>&amp;Name</string>
+         </property>
+         <property name="buddy">
+          <cstring>nameLineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="nameLineEdit"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="phoneNumberLabel">
+         <property name="text">
+          <string>&amp;Phone Number</string>
+         </property>
+         <property name="buddy">
+          <cstring>phoneNumberLineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="phoneNumberLineEdit"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="addressLabel">
+         <property name="text">
+          <string>&amp;Address</string>
+         </property>
+         <property name="buddy">
+          <cstring>addressLineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="addressLineEdit"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="emailLabel">
+         <property name="text">
+          <string>Email</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="emaillineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="favoriteLabel">
+         <property name="text">
+          <string>Favorite</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QComboBox" name="FavoriteComboBox">
+         <item>
           <property name="text">
-           <string>I&amp;D</string>
+           <string>Medical</string>
           </property>
-          <property name="buddy">
-           <cstring>idLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="idLineEdit">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="nameLabel">
+         </item>
+         <item>
           <property name="text">
-           <string>&amp;Name</string>
+           <string>Diet</string>
           </property>
-          <property name="buddy">
-           <cstring>nameLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="nameLineEdit"/>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="phoneNumberLabel">
+         </item>
+         <item>
           <property name="text">
-           <string>&amp;Phone Number</string>
+           <string>Health</string>
           </property>
-          <property name="buddy">
-           <cstring>phoneNumberLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="phoneNumberLineEdit"/>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="emailLineEdit"/>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="addressLabel">
+         </item>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="ageLabel">
+         <property name="text">
+          <string>Age</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QSpinBox" name="AgeSpinBox"/>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="genderLabel">
+         <property name="text">
+          <string>Gender</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QRadioButton" name="MaleButton">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Male</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <widget class="QRadioButton" name="FemaleButton">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Female</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="emailComboBox">
+         <item>
           <property name="text">
-           <string>&amp;Address</string>
+           <string>naver.com</string>
           </property>
-          <property name="buddy">
-           <cstring>addressLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLineEdit" name="addressLineEdit"/>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLineEdit" name="fatLineEdit"/>
-        </item>
-        <item row="17" column="1">
-         <widget class="QPushButton" name="modifyPushButton">
+         </item>
+         <item>
           <property name="text">
-           <string>&amp;Modify</string>
+           <string>gmail.com</string>
           </property>
-         </widget>
-        </item>
-        <item row="18" column="1">
-         <widget class="QPushButton" name="addPushButton">
+         </item>
+         <item>
           <property name="text">
-           <string>&amp;Add</string>
+           <string>osstem.org</string>
           </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QRadioButton" name="maleButton">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Male</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QRadioButton" name="femaleButton">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Female</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="emailLabel">
-          <property name="text">
-           <string>Email</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="fatLabel">
-          <property name="text">
-           <string>Fat</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTreeWidget" name="treeWidget">
-     <property name="maximumSize">
-      <size>
-       <width>200</width>
-       <height>350</height>
-      </size>
-     </property>
-     <property name="rootIsDecorated">
-      <bool>false</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>ID</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Name</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Phone Number</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Address</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item>
-    <widget class="QToolBox" name="toolBox">
-     <property name="maximumSize">
-      <size>
-       <width>200</width>
-       <height>200</height>
-      </size>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="searchPage">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>200</width>
-        <height>176</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>&amp;Search</string>
-      </attribute>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="aLabel">
+         <property name="maximumSize">
+          <size>
+           <width>15</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>@</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="addHorizontalLayout">
+       <item>
+        <widget class="QPushButton" name="addPushButton">
+         <property name="text">
+          <string>&amp;Add</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="modifyPushButton">
+         <property name="text">
+          <string>&amp;Modify</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="searchPage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>300</width>
+      <height>292</height>
+     </rect>
+    </property>
+    <attribute name="label">
+     <string>&amp;Search</string>
+    </attribute>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
       <widget class="QTreeWidget" name="searchTreeWidget">
-       <property name="geometry">
-        <rect>
-         <x>6</x>
-         <y>6</y>
-         <width>179</width>
-         <height>114</height>
-        </rect>
+       <property name="enabled">
+        <bool>false</bool>
        </property>
        <property name="rootIsDecorated">
         <bool>false</bool>
@@ -266,55 +291,154 @@
          <string>Address</string>
         </property>
        </column>
+       <column>
+        <property name="text">
+         <string>Email</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Favorite</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Age</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Gender</string>
+        </property>
+       </column>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="searchComboBox">
+         <item>
+          <property name="text">
+           <string>ID</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Phone Number</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Address</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Email</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Favorite</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Age</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Gender</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="searchLineEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
       <widget class="QPushButton" name="searchPushButton">
-       <property name="geometry">
-        <rect>
-         <x>6</x>
-         <y>152</y>
-         <width>80</width>
-         <height>18</height>
-        </rect>
-       </property>
        <property name="text">
         <string>S&amp;earch</string>
        </property>
       </widget>
-      <widget class="QWidget" name="">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QComboBox" name="searchComboBox">
-          <item>
-           <property name="text">
-            <string>ID</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Phone Number</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Address</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="searchLineEdit"/>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </widget>
-   </item>
-  </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>20</y>
+     <width>253</width>
+     <height>298</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="rootIsDecorated">
+    <bool>false</bool>
+   </property>
+   <attribute name="headerStretchLastSection">
+    <bool>true</bool>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Phone Number</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Address</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Email</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Favorite</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Age</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Gender</string>
+    </property>
+   </column>
+  </widget>
  </widget>
  <resources/>
  <connections/>

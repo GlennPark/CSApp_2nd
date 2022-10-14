@@ -30,8 +30,11 @@ private slots:
     void on_modifyPushButton_clicked();
     void on_searchPushButton_clicked();
 
+
+    void on_ClientManagerForm_destroyed();
+
 private:
-    int makeId();
+    int makeCid();
 
     QMap<int, ClientItem*> clientList;
     Ui::ClientManagerForm *ui;
