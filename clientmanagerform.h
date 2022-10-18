@@ -2,6 +2,7 @@
 #define CLIENTMANAGERFORM_H
 
 #include <QWidget>
+
 #include <QHash>
 
 #include "clientitem.h"

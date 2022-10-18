@@ -1,40 +1,62 @@
 #ifndef CHATSERVERFORM_H
 #define CHATSERVERFORM_H
 
-#include <QMainWindow>
 #include <QWidget>
-#include <QLabel>
+#include <QList>
+#include <QHash>
 
-#include <QTextEdit>
-#include <QPushButton>
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QApplication>
+class QLabel;
+class QTcpServer;
+class QTcpSocket;
 
+namespace Ui {
+class ChatServerForm;
+}
 
+typedef struct {
+    int type;
+    char data[1020];
+} chatProtocolType;
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class ChatServerForm; }
-QT_END_NAMESPACE
+typedef enum {
+    Chat_Login,
+    Chat_In,
+    Chat_Talk,
+    Chat_Close,
+    Chat_LogOut,
+    Chat_Invite,
+    Chat_KickOut,
+    Chat_FileTransform
+} Chat_Status;
 
 class ChatServerForm : public QWidget
 {
     Q_OBJECT
-public:
-    ChatServerForm(QWidget *parent = nullptr);
-    ~ChatServerForm();
-signals:
 
-private slots:
-    void clientConnect();
-    void chatData();
-    void removeItem();
+public:
+    explicit ChatServerForm(QWidget *parent = nullptr);
+    ~ChatServerForm();
+
 private:
+    const int BLOCK_SIZE = 1024;
     Ui::ChatServerForm *ui;
-    QLabel *infoLabel;
     QTcpServer *tcpServer;
     QList<QTcpSocket*> clientList;
+    QList<int> clientIDList;
+    QHash<QString, QString> clientNameHash;
+    QHash<QString, int> clientIDHash;
+    QMenu* menu;
 
+private slots:
+    void clientConnect( );                       /* 채팅 서버 */
+    void receiveData( );
+    void removeClient( );
+    void addClient(int, QString);
+    void inviteClient();
+    void kickOut();
+
+    void on_clientTreeWidget_customContextMenuRequested(const QPoint &pos);
+   // ui
 };
 
 #endif // CHATSERVERFORM_H

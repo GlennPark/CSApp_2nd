@@ -1,81 +1,227 @@
 #include "chatserverform.h"
 #include "ui_chatserverform.h"
-#include <QtGui>
-#include <QtWidgets>
-#include <QtNetwork>
 
-#define BLOCK_SIZE 1024
+#include <QPushButton>
+#include <QBoxLayout>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QApplication>
+#include <QMessageBox>
+#include <QScrollBar>
+#include <QDateTime>
+#include <QDebug>
+#include <QMenu>
 
-ChatServerForm::ChatServerForm(QWidget *parent)
-    : QWidget(parent), ui(new Ui::ChatServerForm)
+ChatServerForm::ChatServerForm(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ChatServerForm)
 {
     ui->setupUi(this);
-
-
-    infoLabel = new QLabel(this);
-    QPushButton *quitButton = new QPushButton("Quit", this);
-    connect(quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
-
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
-    buttonLayout -> addStretch(1);
-    buttonLayout -> addWidget(quitButton);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout -> addWidget(infoLabel);
-    mainLayout -> addLayout(buttonLayout);
-    setLayout(mainLayout);
-
+    QList<int> sizes;
+    sizes << 120 << 500;
+    ui->splitter->setSizes(sizes);
     tcpServer = new QTcpServer(this);
-    connect(tcpServer, SIGNAL(newConnection()), SLOT(clientConnect()));
-    if(!tcpServer ->listen())
-    {
-        QMessageBox::critical(this, tr("Echo Server"),\
-                              tr("Unable to start the server: %1.")\
-                              .arg(tcpServer->errorString()));
-        close();
+    connect(tcpServer, SIGNAL(newConnection( )), SLOT(clientConnect( )));
+    if (!tcpServer->listen(QHostAddress::Any, 8000)) {
+        QMessageBox::critical(this, tr("Chatting Server"), \
+                              tr("Unable to start the server: %1.") \
+                              .arg(tcpServer->errorString( )));
+        close( );
         return;
     }
 
-    infoLabel->setText(tr("The server is running on port %1.")
-                       .arg(tcpServer->serverPort()));
-    setWindowTitle(tr("Echo Server"));
+    QAction* inviteAction = new QAction(tr("&Invite"));
+    inviteAction->setObjectName("Invite");
+    connect(inviteAction, SIGNAL(triggered()), SLOT(inviteClient()));
 
+    QAction* removeAction = new QAction(tr("&Kick out"));
+    connect(removeAction, SIGNAL(triggered()), SLOT(kickOut()));
+
+    menu = new QMenu;
+    menu->addAction(inviteAction);
+    menu->addAction(removeAction);
+    ui->clientTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    qDebug() << tr("The server is running on port %1.").arg(tcpServer->serverPort( ));
 }
 
-
-
-void ChatServerForm::chatData()
+ChatServerForm::~ChatServerForm()
 {
-    QTcpSocket *clientConnection = (QTcpSocket *)sender();
-    if(clientConnection->bytesAvailable()>BLOCK_SIZE) return;
-    QByteArray bytearray = clientConnection->read(BLOCK_SIZE);
-//    clientConnection->write(bytearray);
-    foreach (QTcpSocket *sock, clientList)
-    {
-        if(sock != clientConnection)
-            sock->write(bytearray);
-    }
+    delete ui;
 
-    infoLabel->setText(QString(bytearray));
-}
-void ChatServerForm::removeItem()
-{
-    QTcpSocket *clientConnection = dynamic_cast<QTcpSocket *>(sender( ));
-    clientList.removeOne(clientConnection);
-    clientConnection->deleteLater();
+    tcpServer->close( );
 }
 
 void ChatServerForm::clientConnect( )
 {
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection( );
-    connect(clientConnection, SIGNAL(readyRead( )), SLOT(echoData( )));
-    connect(clientConnection, SIGNAL(disconnected( )), SLOT(removeItem()));
-    infoLabel->setText("new connection is established...");
-
-    clientList.append(clientConnection);        // QList<QTcpSocket*> clientList;
+    connect(clientConnection, SIGNAL(readyRead( )), SLOT(receiveData( )));
+    connect(clientConnection, SIGNAL(disconnected( )), SLOT(removeClient()));
+    qDebug("new connection is established...");
 }
-ChatServerForm::~ChatServerForm()
+
+void ChatServerForm::receiveData( )
 {
-    delete ui;
+    QTcpSocket *clientConnection = dynamic_cast<QTcpSocket *>(sender( ));
+    QByteArray bytearray = clientConnection->read(BLOCK_SIZE);
+
+    chatProtocolType data;
+    QDataStream in(&bytearray, QIODevice::ReadOnly);
+    in >> data.type;
+    in.readRawData(data.data, 1020);
+
+    QString ip = clientConnection->peerAddress().toString();
+    QString name = QString::fromStdString(data.data);
+
+    switch(data.type) {
+    case Chat_Login:
+        foreach(auto item, ui->clientTreeWidget->findItems(name, Qt::MatchFixedString, 1)) {
+            if(item->text(0) != "O") {
+                item->setText(0, "O");
+                clientList.append(clientConnection);        // QList<QTcpSocket*> clientList;
+                clientNameHash[ip] = name;
+            }
+        }
+        break;
+    case Chat_In:
+        foreach(auto item, ui->clientTreeWidget->findItems(name, Qt::MatchFixedString, 1)) {
+            if(item->text(0) != "O") {
+                item->setText(0, "O");
+            }
+        }
+        break;
+    case Chat_Talk: {
+        foreach(QTcpSocket *sock, clientList) {
+            if(sock != clientConnection) {
+                QByteArray data("<font color=red>");
+                data.append(name.toStdString().data());
+                data.append("</font> : ");
+                data.append(bytearray);
+                sock->write(data);
+            }
+        }
+
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->messageTreeWidget);
+        item->setText(0, clientConnection->peerAddress().toString());
+        item->setText(1, QString::number(clientConnection->peerPort()));
+        item->setText(2, QString::number(clientIDHash[clientNameHash[ip]]));
+        item->setText(3, clientNameHash[ip]);
+        item->setText(4, QString(data.data));
+        item->setText(5, QDateTime::currentDateTime().toString());
+        item->setToolTip(4, QString(data.data));
+
+        for(int i = 0; i < ui->messageTreeWidget->columnCount(); i++)
+            ui->messageTreeWidget->resizeColumnToContents(i);
+
+        ui->messageTreeWidget->addTopLevelItem(item);
+    }
+        break;
+    case Chat_Close:
+        foreach(auto item, ui->clientTreeWidget->findItems(name, Qt::MatchContains, 1)) {
+            if(item->text(0) == "O") {
+                item->setText(0, "X");
+            }
+        }
+        break;
+    case Chat_LogOut:
+        foreach(auto item, ui->clientTreeWidget->findItems(name, Qt::MatchContains, 1)) {
+            if(item->text(0) == "O") {
+                item->setText(0, "X");
+                clientList.removeOne(clientConnection);        // QList<QTcpSocket*> clientList;
+            }
+        }
+//        ui->inviteComboBox->addItem(name);
+        break;
+    }
+    //    qDebug() << bytearray;
+}
+
+void ChatServerForm::removeClient()
+{
+    QTcpSocket *clientConnection = dynamic_cast<QTcpSocket *>(sender( ));
+    clientList.removeOne(clientConnection);
+    clientConnection->deleteLater();
+
+    QString name = clientNameHash[clientConnection->peerAddress().toString()];
+    foreach(auto item, ui->clientTreeWidget->findItems(name, Qt::MatchContains, 1)) {
+        item->setText(0, "X");
+    }
+}
+
+void ChatServerForm::addClient(int id, QString name)
+{
+    clientIDList << id;
+    QTreeWidgetItem* item = new QTreeWidgetItem(ui->clientTreeWidget);
+    item->setText(0, "X");
+    item->setText(1, name);
+    ui->clientTreeWidget->addTopLevelItem(item);
+    clientIDHash[name] = id;
+    ui->clientTreeWidget->resizeColumnToContents(0);
+}
+
+void ChatServerForm::on_clientTreeWidget_customContextMenuRequested(const QPoint &pos)
+{
+    foreach(QAction *action, menu->actions()) {
+        if(action->objectName() == "Invite")
+            action->setEnabled(ui->clientTreeWidget->currentItem()->text(0) != "O");
+        else
+            action->setEnabled(ui->clientTreeWidget->currentItem()->text(0) == "O");
+    }
+    QPoint globalPos = ui->clientTreeWidget->mapToGlobal(pos);
+    menu->exec(globalPos);
+}
+
+void ChatServerForm::kickOut()
+{
+    QString name = ui->clientTreeWidget->currentItem()->text(1);
+    QString ip = clientNameHash.key(name);
+
+    chatProtocolType data;
+    data.type = Chat_KickOut;
+    qstrcpy(data.data, "");
+    QByteArray sendArray;
+    QDataStream out(&sendArray, QIODevice::WriteOnly);
+    out << data.type;
+    out.writeRawData(data.data, 1020);
+
+    foreach(QTcpSocket* sock, clientList) {
+        if(sock->peerAddress().toString() == ip){
+//            sock->disconnectFromHost();
+            sock->write(sendArray);
+        }
+    }
+    ui->clientTreeWidget->currentItem()->setText(0, "X");
+//    clientIDList.append(clientIDHash[name]);
+//    ui->inviteComboBox->addItem(name);
+}
+
+void ChatServerForm::inviteClient()
+{
+    if(ui->clientTreeWidget->topLevelItemCount()) {
+        QString name = ui->clientTreeWidget->currentItem()->text(1);
+        QString ip = clientNameHash.key(name, "");
+
+        chatProtocolType data;
+        data.type = Chat_Invite;
+        qstrcpy(data.data, "");
+        QByteArray sendArray;
+        QDataStream out(&sendArray, QIODevice::WriteOnly);
+        out << data.type;
+        out.writeRawData(data.data, 1020);
+
+        foreach(QTcpSocket* sock, clientList) {
+            if(sock->peerAddress().toString() == ip){
+                sock->write(sendArray);
+//                clientList.append(sock);        // QList<QTcpSocket*> clientList;
+                foreach(auto item, ui->clientTreeWidget->findItems(name, Qt::MatchFixedString, 1)) {
+                    if(item->text(1) != "O") {
+                        item->setText(0, "O");
+                        clientList.append(sock);        // QList<QTcpSocket*> clientList;
+//                        clientNameHash[ip] = name;
+                    }
+                }
+            }
+        }
+    }
 }
 
