@@ -22,20 +22,24 @@ MainWindow::MainWindow(QWidget *parent)
     connect(productForm, SIGNAL(destroyed()), productForm, SLOT(deleteLater()));
 
     chatClientForm = new ChatClientForm(0);
-    ui->mdiArea->addSubWindow(chatClientForm);
-//    chatClientForm->show();
     chatClientForm->setWindowTitle(tr("Chat Client Form"));
+    ui->mdiArea->addSubWindow(chatClientForm);
     connect(chatClientForm, SIGNAL(destroyed()), chatClientForm, SLOT(deleteLater()));
+//    chatClientForm->show();
+
+
    // connect(,SIGNAL(triggered()), chatClientForm, SLOT(on_actionChatClient_triggered()));
 
 
     chatServerForm = new ChatServerForm(0);
+    chatServerForm->setWindowTitle(tr("Chat Server Form"));
 //    chatServerForm->show();
     ui->mdiArea->addSubWindow(chatServerForm);
-    chatServerForm->setWindowTitle(tr("Chat Server Form"));
+
     connect(chatServerForm, SIGNAL(destroyed()), chatServerForm, SLOT(deleteLater()));
 
-
+    fileClientForm = new FileClientForm(0);
+    fileClientForm->setWindowTitle;
 
     clientForm->showMaximized();
 }
@@ -77,5 +81,15 @@ void MainWindow::on_actionChatServer_triggered()
     {
         chatServerForm->setFocus();
     }
+}
+
+
+void MainWindow::on_actionFileTransfer_triggered()
+{
+    if(fileClientForm != nullptr)
+    {
+        fileClientForm->setFocus();
+    }
+
 }
 

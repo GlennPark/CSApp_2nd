@@ -13,6 +13,7 @@ SOURCES += \
     chatserverform.cpp \
     clientitem.cpp \
     clientmanagerform.cpp \
+    fileclientform.cpp \
     main.cpp \
     mainwindow.cpp \
     productitem.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     chatserverform.h \
     clientitem.h \
     clientmanagerform.h \
+    fileclientform.h \
     mainwindow.h \
     productitem.h \
     productmanagerform.h

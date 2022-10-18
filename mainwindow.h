@@ -2,10 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <clientmanagerform.h>
-#include <productmanagerform.h>
-#include <chatserverform.h>
-#include <chatclientform.h>
+#include "clientmanagerform.h"
+#include "productmanagerform.h"
+#include "chatserverform.h"
+#include "chatclientform.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -13,6 +14,7 @@ QT_END_NAMESPACE
 
 class ChatServerForm;
 class ChatClientForm;
+class FileClientForm;
 
 class MainWindow : public QMainWindow
 {
@@ -32,11 +34,14 @@ private slots:
 
     void on_actionChatServer_triggered();
 
+    void on_actionFileTransfer_triggered();
+
 private:
     Ui::MainWindow *ui;
     ClientManagerForm *clientForm;
     ProductManagerForm *productForm;
-    ChatClientForm *chatClientForm;
     ChatServerForm *chatServerForm;
+    ChatClientForm *chatClientForm;
+    FileClientForm *fileClientForm;
 };
 #endif // MAINWINDOW_H
