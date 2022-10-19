@@ -14,6 +14,8 @@ QT_END_NAMESPACE
 
 class ChatServerForm;
 class ChatClientForm;
+
+class FileServerForm;
 class FileClientForm;
 
 class MainWindow : public QMainWindow
@@ -36,12 +38,16 @@ private slots:
 
     void on_actionFileTransfer_triggered();
 
+    void on_actionFileServer_triggered();
+
 private:
     Ui::MainWindow *ui;
     ClientManagerForm *clientForm;
     ProductManagerForm *productForm;
     ChatServerForm *chatServerForm;
     ChatClientForm *chatClientForm;
+
+    FileServerForm *fileServerForm;
     FileClientForm *fileClientForm;
 };
 #endif // MAINWINDOW_H

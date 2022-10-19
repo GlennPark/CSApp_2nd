@@ -10,11 +10,6 @@ class QLabel;
 class QTcpServer;
 class QTcpSocket;
 
-//파일 입출력
-class QFile;
-class QProgressDialog;
-
-
 namespace Ui {
 class ChatServerForm;
 }
@@ -32,7 +27,6 @@ typedef enum {
     Chat_LogOut,
     Chat_Invite,
     Chat_KickOut,
-    Chat_FileTransform
 } Chat_Status;
 
 class ChatServerForm : public QWidget
@@ -43,17 +37,7 @@ public:
     explicit ChatServerForm(QWidget *parent = nullptr);
     ~ChatServerForm();
 
-    //파일 입출력 멤버변수
-    QLabel *infoLabel;
-    QTcpServer *server;
-    QTcpSocket *receivedSocket;
-    QFile *newFile;
-    QProgressDialog *progressDialog;
 
-    QByteArray inBlock;
-    QString filename;
-    qint64 totalSize;
-    qint64 byteReceived;
 
 private:
     const int BLOCK_SIZE = 1024;
@@ -77,9 +61,6 @@ private slots:
     void kickOut();
     void on_clientTreeWidget_customContextMenuRequested(const QPoint &pos);
 
-    //파일 입출력 슬롯함수
-    void acceptConnection();
-    void readClient();
-    void clickButton();
+
 };
 #endif // CHATSERVERFORM_H

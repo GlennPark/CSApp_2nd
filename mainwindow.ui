@@ -81,7 +81,9 @@
    <addaction name="separator"/>
    <addaction name="actionChatClient"/>
    <addaction name="separator"/>
-   <addaction name="actionFileTransfer"/>
+   <addaction name="actionFileServer"/>
+   <addaction name="separator"/>
+   <addaction name="actionFileClient"/>
    <addaction name="separator"/>
    <addaction name="actionQuit"/>
    <addaction name="separator"/>
@@ -119,9 +121,14 @@
     <string>ChatClient</string>
    </property>
   </action>
-  <action name="actionFileTransfer">
+  <action name="actionFileClient">
    <property name="text">
     <string>FileTransfer</string>
+   </property>
+  </action>
+  <action name="actionFileServer">
+   <property name="text">
+    <string>FileServer</string>
    </property>
   </action>
  </widget>

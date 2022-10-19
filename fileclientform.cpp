@@ -1,87 +1,106 @@
-#include "chatserverform.h"
-#include "ui_chatserverform.h"
+#include "fileclientform.h"
+#include "ui_fileclientform.h"
+#include "fileserverform.h"
 
-#include <QTcpServer>
 #include <QTcpSocket>
 #include <QFile>
 #include <QFileInfo>
 #include <QByteArray>
+#include <QProgressDialog>
+#include <QFileDialog>
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
-#include <QProgressDialog>
 
-ChatServerForm::ChatServerForm(QWidget *parent)
-    : QWidget(parent)
+FileClientForm::FileClientForm(QWidget *parent)
+    : QWidget(parent), sendTimes(0)
 {
     infoLabel = new QLabel("Hello, World", this);
-    QPushButton *button = new QPushButton("Server Start", this);
+    QPushButton* button = new QPushButton("Send", this);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(infoLabel);
     layout->addWidget(button);
 
+    tcpClient = new QTcpSocket(this);
     progressDialog = new QProgressDialog(this);
     progressDialog->hide();
-    connect(button, SIGNAL(clicked()), SLOT(clickButton()));
+
+    connect(button, SIGNAL(clicked()), SLOT(sendData()));
+    connect(tcpClient, SIGNAL(connected()), SLOT(send())); // When the connection is successful, start to transfer files
+    connect(tcpClient, SIGNAL(bytesWritten(qint64)), SLOT(goOnSend(qint64)));
+//    connect(tcpClient, SIGNAL(clicked()), SLOT(openFile()));
+
 }
 
-
-void ChatServerForm::acceptConnection()
+FileClientForm::~FileClientForm()
 {
-    infoLabel->setText(tr("Connected, preparing to receive files!"));
-
-    receivedSocket = server->nextPendingConnection();
-    connect(receivedSocket, SIGNAL(readyRead()), this, SLOT(readClient()));
 }
 
-void ChatServerForm::readClient()
+void FileClientForm::send() // Send file header information
 {
-    infoLabel->setText(tr("Receiving file ..."));
+    byteToWrite = localFile->size(); // The size of the remaining data
+    totalSize = localFile->size();
 
-    if (byteReceived == 0) { // just started to receive data, this data is file information
-        progressDialog->setValue(0);
+    loadSize = 4 * 1024; // The size of data sent each time
 
-        QDataStream in(receivedSocket);
-        in >> totalSize >> byteReceived >> filename;
-        QFileInfo info(filename);
-        QString currentFileName = info.fileName();
-        newFile = new QFile(currentFileName);
-        newFile->open(QFile::WriteOnly);
-        progressDialog->show();
-    } else { // Officially read the file content
-        inBlock = receivedSocket->readAll();
+    QFileInfo info(filename);
+    QDataStream out(&outBlock, QIODevice::WriteOnly);
+    out << qint64 (0) << qint64 (0) << filename;
 
-        byteReceived += inBlock.size();
-        newFile->write(inBlock);
-        newFile->flush();
-    }
+    totalSize += outBlock.size(); // The total size is the file size plus the size of the file name and other information
+    byteToWrite += outBlock.size();
+
+    out.device ()-> seek (0); // Go back to the beginning of the byte stream to write a qint64 in front, which is the total size and file name and other information size
+    out << totalSize << qint64(outBlock.size());
+
+    tcpClient->write(outBlock); // Send the read file to the socket
 
     progressDialog->setMaximum(totalSize);
-    progressDialog->setValue(byteReceived);
+    progressDialog->setValue(totalSize-byteToWrite);
+    progressDialog->show();
+}
 
-    if (byteReceived == totalSize) {
-        infoLabel->setText(tr("%1 receive completed").arg(filename));
+void FileClientForm::goOnSend(qint64 numBytes) // Start sending file content
+{
+    byteToWrite -= numBytes; // Remaining data size
+    outBlock = localFile->read(qMin(byteToWrite, loadSize));
+    tcpClient->write(outBlock);
 
-        inBlock.clear();
-        byteReceived = 0;
-        totalSize = 0;
+    progressDialog->setMaximum(totalSize);
+    progressDialog->setValue(totalSize-byteToWrite);
+
+    if (byteToWrite == 0) { // Send completed
+        infoLabel->setText(tr("File sending completed!"));
         progressDialog->hide();
-        newFile->close();
     }
 }
 
-void ChatServerForm::clickButton()
+void FileClientForm::openFile() // Open the file and get the file name (including path)
 {
+    progressDialog->setValue(0); // Not sent for the first time
+
+    loadSize = 0;
+    byteToWrite = 0;
     totalSize = 0;
-    byteReceived = 0;
+    outBlock.clear();
 
-    server = new QTcpServer(this);
-    server->listen(QHostAddress("127.0.0.1"), 8000);
+    filename = QFileDialog::getOpenFileName(this);
+    localFile = new QFile(filename);
+    localFile->open(QFile::ReadOnly);
 
-    connect(server, SIGNAL(newConnection()), SLOT(acceptConnection()));
-
-    progressDialog->setValue(0);
-    progressDialog->hide();
-    infoLabel->setText(tr("Start listening ..."));
+    infoLabel->setText(tr("file %1 is opened").arg(filename));
 }
+
+void FileClientForm::sendData()
+{
+    openFile();
+    if (sendTimes == 0) { // Only the first time it is sent, it happens when the connection generates the signal connect
+        tcpClient->connectToHost(QHostAddress("127.0.0.1"), 8300);
+        sendTimes = 1;
+    } else
+        send(); // When sending for the first time, connectToHost initiates the connect signal to call send, and you need to call send after the second time
+
+    infoLabel->setText(tr("Sending file %1").arg(filename));
+}
+
