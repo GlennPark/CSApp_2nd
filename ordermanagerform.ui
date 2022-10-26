@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ProductManagerForm</class>
- <widget class="QWidget" name="ProductManagerForm">
+ <class>OrderManagerForm</class>
+ <widget class="QWidget" name="OrderManagerForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Client Info</string>
+   <string>Order Info</string>
   </property>
-  <layout class="QVBoxLayout" name="productVerticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -28,22 +28,32 @@
          </property>
          <column>
           <property name="text">
-           <string>ID</string>
+           <string>Order Number</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Name</string>
+           <string>Client Name</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Price</string>
+           <string>Product Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string># Price</string>
           </property>
          </column>
          <column>
           <property name="text">
            <string>Quantity</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Total Price</string>
           </property>
          </column>
         </widget>
@@ -52,14 +62,14 @@
      </widget>
      <widget class="QToolBox" name="toolBox">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="inputPage">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>353</width>
+         <width>411</width>
          <height>508</height>
         </rect>
        </property>
@@ -68,11 +78,11 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <layout class="QFormLayout" name="productFormLayout">
+         <layout class="QFormLayout" name="clientFormLayout">
           <item row="0" column="0">
            <widget class="QLabel" name="idLabel">
             <property name="text">
-             <string>I&amp;D</string>
+             <string>&amp;Order Number</string>
             </property>
             <property name="buddy">
              <cstring>idLineEdit</cstring>
@@ -80,12 +90,12 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="nameLabel">
+           <widget class="QLabel" name="clientLabel">
             <property name="text">
-             <string>&amp;Name</string>
+             <string>&amp;Client Name</string>
             </property>
             <property name="buddy">
-             <cstring>nameLineEdit</cstring>
+             <cstring>clientComboBox</cstring>
             </property>
            </widget>
           </item>
@@ -100,12 +110,12 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="priceLabel">
+           <widget class="QLabel" name="productLabel">
             <property name="text">
-             <string>&amp;Price</string>
+             <string>&amp;Product Name</string>
             </property>
             <property name="buddy">
-             <cstring>priceLineEdit</cstring>
+             <cstring>productComboBox</cstring>
             </property>
            </widget>
           </item>
@@ -116,41 +126,97 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="totalPriceLabel">
+            <property name="text">
+             <string>&amp;Total Price</string>
+            </property>
+            <property name="buddy">
+             <cstring>totalPriceLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="priceLabel">
+            <property name="text">
+             <string>P&amp;rice per piece</string>
+            </property>
+            <property name="buddy">
+             <cstring>priceLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="priceLineEdit"/>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="totalPriceLineEdit"/>
+          </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="nameLineEdit"/>
+           <widget class="QComboBox" name="clientComboBox">
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="priceLineEdit"/>
+           <widget class="QComboBox" name="productComboBox">
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="quantitySpinBox">
             <property name="maximum">
-             <number>999999999</number>
+             <number>10000</number>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTabWidget" name="favoriteTabWidget">
-          <property name="currentIndex">
-           <number>0</number>
+         <widget class="QTreeWidget" name="clientTreeWidget">
+          <property name="rootIsDecorated">
+           <bool>false</bool>
           </property>
-          <widget class="QWidget" name="medicalTab">
-           <attribute name="title">
-            <string>Medical</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="healthTab">
-           <attribute name="title">
-            <string>Health</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="dietTab">
-           <attribute name="title">
-            <string>Diet</string>
-           </attribute>
-          </widget>
+          <column>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Phone Number</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Address</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTreeWidget" name="productTreeWidget">
+          <property name="rootIsDecorated">
+           <bool>false</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Price</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Quantity</string>
+           </property>
+          </column>
          </widget>
         </item>
         <item>
@@ -191,14 +257,14 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>353</width>
+         <width>411</width>
          <height>508</height>
         </rect>
        </property>
        <attribute name="label">
         <string>&amp;Search</string>
        </attribute>
-       <layout class="QVBoxLayout" name="searchVerticalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QTreeWidget" name="searchTreeWidget">
           <property name="rootIsDecorated">
@@ -211,17 +277,27 @@
           </column>
           <column>
            <property name="text">
-            <string>Name</string>
+            <string>Client Name</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Price</string>
+            <string>Produce Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string># Price</string>
            </property>
           </column>
           <column>
            <property name="text">
             <string>Quantity</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Total Price</string>
            </property>
           </column>
          </widget>
@@ -237,7 +313,12 @@
             </item>
             <item>
              <property name="text">
-              <string>Name</string>
+              <string>Client Name</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Product Name</string>
              </property>
             </item>
             <item>
@@ -248,6 +329,11 @@
             <item>
              <property name="text">
               <string>Quantity</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Total Price</string>
              </property>
             </item>
            </widget>

@@ -6,8 +6,7 @@
 class ClientItem : public QTreeWidgetItem
 {
 public:
-    explicit ClientItem(int Cid = 0, QString = "", QString = "", QString = "", QString = "", QString = "", QString = "", QString = "" );
-
+    explicit ClientItem(int Cid = 0, QString = "", QString = "", QString = "", QString = "", QString ="", QString ="" , QString = "",QString = "");
 
     QString getName() const;
     void setName(QString&);
@@ -15,20 +14,18 @@ public:
     void setPhoneNumber(QString&);
     QString getEmail() const;
     void setEmail(QString&);
+    QString getDomain() const;
+    void setDomain(QString&);
     QString getAddress() const;
     void setAddress(QString&);
     QString getFavorite() const;
     void setFavorite(QString&);
-
+    QString getAge() const;
+    void setAge(QString&);
     QString getGender() const;
     void setGender(QString&);
 
-    QString getAge() const;
-    void setAge(QString&);
-
-
     int Cid() const;
-
     bool operator==(const ClientItem &other) const;
 };
 

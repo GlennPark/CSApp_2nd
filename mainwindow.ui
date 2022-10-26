@@ -10,8 +10,14 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Health Care</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -29,8 +35,14 @@
     </property>
     <item>
      <widget class="QMdiArea" name="mdiArea">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
       <property name="viewMode">
-       <enum>QMdiArea::TabbedView</enum>
+       <enum>QMdiArea::SubWindowView</enum>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -62,6 +74,11 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -71,39 +88,149 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="separator"/>
    <addaction name="actionClient"/>
+   <addaction name="customerSearchAction"/>
    <addaction name="separator"/>
    <addaction name="actionProduct"/>
+   <addaction name="productSearchAction"/>
    <addaction name="separator"/>
-   <addaction name="actionShop"/>
+   <addaction name="actionOrder"/>
+   <addaction name="shopSearchAction"/>
+   <addaction name="separator"/>
+   <addaction name="actionChatting"/>
+   <addaction name="customerChatAction"/>
    <addaction name="separator"/>
    <addaction name="actionQuit"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset theme="applications-system" resource="CSApp.qrc">
+     <normaloff>:/images/icons8-exit-64-2.png</normaloff>:/images/icons8-exit-64-2.png</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
   </action>
   <action name="actionClient">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-consumer-64.png</normaloff>:/images/icons8-consumer-64.png</iconset>
+   </property>
    <property name="text">
-    <string>Client</string>
+    <string>Client Info</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+1</string>
    </property>
   </action>
   <action name="actionProduct">
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-canned-food-64.png</normaloff>:/images/icons8-canned-food-64.png</iconset>
+   </property>
    <property name="text">
-    <string>Product</string>
+    <string>Product Info</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
    </property>
   </action>
-  <action name="actionShop">
+  <action name="actionOrder">
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-browser-64.png</normaloff>:/images/icons8-browser-64.png</iconset>
+   </property>
    <property name="text">
-    <string>Shop</string>
+    <string>Order Info</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionChatting">
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-network-64.png</normaloff>:/images/icons8-network-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Chatting Server</string>
+   </property>
+   <property name="toolTip">
+    <string>Chatting Server</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="customerChatAction">
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-meeting-64.png</normaloff>:/images/icons8-meeting-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>chatClient</string>
+   </property>
+   <property name="iconText">
+    <string>customerChat</string>
+   </property>
+   <property name="toolTip">
+    <string>customerChat</string>
+   </property>
+  </action>
+  <action name="customerSearchAction">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-research-64.png</normaloff>:/images/icons8-research-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>customerSearch</string>
+   </property>
+   <property name="toolTip">
+    <string>customerSearch</string>
+   </property>
+  </action>
+  <action name="productSearchAction">
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-application-64.png</normaloff>:/images/icons8-application-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>productSearch</string>
+   </property>
+  </action>
+  <action name="shopSearchAction">
+   <property name="icon">
+    <iconset resource="CSApp.qrc">
+     <normaloff>:/images/icons8-searching-64.png</normaloff>:/images/icons8-searching-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>shopSearch</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="CSApp.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>

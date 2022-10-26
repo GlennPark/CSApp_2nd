@@ -1,20 +1,16 @@
 #include "clientitem.h"
 
-#include <QLabel>
-#include <iostream>
-
-using namespace std;
-
-ClientItem::ClientItem(int Cid, QString name, QString phoneNumber, QString email, QString address, QString favorite, QString age, QString gender)
+ClientItem::ClientItem(int Cid, QString name, QString phoneNumber, QString email, QString domain, QString address, QString favorite, QString age, QString gender)
 {
     setText(0, QString::number(Cid));
     setText(1, name);
     setText(2, phoneNumber);
     setText(3, email);
-    setText(4, address);
-    setText(5, favorite);
-    setText(6, age);
-    setText(7, gender);
+    setText(4, domain);
+    setText(5, address);
+    setText(6, favorite);
+    setText(7, age);
+    setText(8, gender);
 }
 
 QString ClientItem::getName() const
@@ -47,44 +43,55 @@ void ClientItem::setEmail(QString& email)
     setText(3, email);
 }
 
-QString ClientItem::getAddress() const
+QString ClientItem::getDomain() const
 {
     return text(4);
 }
 
-void ClientItem::setAddress(QString& address)
+void ClientItem::setDomain(QString& domain)
 {
-    setText(4, address);
+    setText(4, domain);
 }
 
-QString ClientItem::getFavorite() const
+QString ClientItem::getAddress() const
 {
     return text(5);
 }
 
-void ClientItem::setFavorite(QString& favorite)
+void ClientItem::setAddress(QString& address)
 {
-    setText(5, favorite);
+    setText(5, address);
 }
 
-QString ClientItem::getAge() const
+QString ClientItem::getFavorite() const
 {
     return text(6);
 }
 
+void ClientItem::setFavorite(QString& favorite)
+{
+    setText(6, favorite);
+}
+
+QString ClientItem::getAge() const
+{
+   return text(7);
+}
+
 void ClientItem::setAge(QString& age)
 {
-    setText(6, age);
+    setText(7, age);
 }
+
 
 QString ClientItem::getGender() const
 {
-    return text(7);
+    return text(8);
 }
 
 void ClientItem::setGender(QString& gender)
 {
-    setText(7, gender);
+    setText(8, gender);
 }
 
 int ClientItem::Cid() const
@@ -93,6 +100,7 @@ int ClientItem::Cid() const
 }
 
 // Define copy assignment operator.
-bool ClientItem::operator==(const ClientItem &other) const {
+bool ClientItem::operator==(const ClientItem &other) const
+{
     return (this->text(1) == other.text(1));
 }

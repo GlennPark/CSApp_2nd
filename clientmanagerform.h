@@ -3,9 +3,8 @@
 
 #include <QWidget>
 #include <QHash>
-
-#include "clientitem.h"
-
+#include<QList>
+class ClientItem;
 class QMenu;
 class QTreeWidgetItem;
 
@@ -20,6 +19,7 @@ class ClientManagerForm : public QWidget
 public:
     explicit ClientManagerForm(QWidget *parent = nullptr);
     ~ClientManagerForm();
+    void loadData();
 
 private slots:
     /* QTreeWidget을 위한 슬롯 */
@@ -29,9 +29,14 @@ private slots:
     void on_addPushButton_clicked();
     void on_modifyPushButton_clicked();
     void on_searchPushButton_clicked();
+    void acceptClientInfo(int);
+    void radioCheck();
 
 
-    void on_ClientManagerForm_destroyed();
+
+signals:
+    void clientAdded(int, QString);
+    void sendClientInfo(QString, QString, QString, QString, QString, QString, QString,  QString);
 
 private:
     int makeCid();
@@ -39,6 +44,7 @@ private:
     QMap<int, ClientItem*> clientList;
     Ui::ClientManagerForm *ui;
     QMenu* menu;
+
 };
 
 #endif // CLIENTMANAGERFORM_H
